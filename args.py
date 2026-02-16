@@ -50,7 +50,7 @@ def get_GAN_config():
     # For training
     config = parser.parse_args()
     config.mode = 'train'
-    config.lambda_wgan = 0.0
+    config.lambda_wgan = 1.0
     config.lambda_gp = 10.0
     config.g_lr = config.d_lr = 1e-4
     config.n_critic = 5
@@ -58,10 +58,10 @@ def get_GAN_config():
     config.log_step = 1
     config.batch_size = 32
 
-    # For testing
+    # # For testing
     # config.mode = 'test'
-    # config.saving_dir = 'exp_results/VAE/2020-06-03_13-38-00'
-    # config.resume_epoch = 150
+    # config.saving_dir = 'exp_results/GAN/2026-02-16_11-12-31/'
+    # config.resume_epoch = 85
 
     return config
 

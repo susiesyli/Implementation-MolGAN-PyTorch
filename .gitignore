@@ -1,1 +1,6 @@
 data/
+*.csv
+*.sdf
+exp_results/
+venv/
+*.smi

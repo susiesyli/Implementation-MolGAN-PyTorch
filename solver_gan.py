@@ -332,11 +332,17 @@ class Solver(object):
             edges_logits, nodes_logits = self.G(z)
             # Postprocess with Gumbel softmax
             (edges_hat, nodes_hat) = self.postprocess((edges_logits, nodes_logits), self.post_method)
+            ## ADDED: 
+            edges_hat_v = edges_hat.detach()
+            nodes_hat_v = nodes_hat.detach()
+            ## END ADDED 
             logits_fake, features_fake = self.D(edges_hat, None, nodes_hat)
 
             # Value losses
             value_logit_real, _ = self.V(a_tensor, None, x_tensor, torch.sigmoid)
-            value_logit_fake, _ = self.V(edges_hat, None, nodes_hat, torch.sigmoid)
+            # value_logit_fake, _ = self.V(edges_hat, None, nodes_hat, torch.sigmoid)
+            value_logit_fake, _ = self.V(edges_hat_v, None, nodes_hat_v, torch.sigmoid) # NEW 
+
 
             # Feature mapping losses. Not used anywhere in the PyTorch version.
             # I include it here for the consistency with the TF code.
@@ -345,7 +351,9 @@ class Solver(object):
             # Real Reward
             reward_r = torch.from_numpy(self.reward(mols)).to(self.device)
             # Fake Reward
-            reward_f = self.get_reward(nodes_hat, edges_hat, self.post_method)
+            # reward_f = self.get_reward(nodes_hat, edges_hat, self.post_method)
+            reward_f = self.get_reward(nodes_hat_v, edges_hat_v, self.post_method) # NEW 
+
 
             # Losses Update
             loss_G = -logits_fake
