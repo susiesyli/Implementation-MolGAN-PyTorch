@@ -3,4 +3,3 @@ data/
 *.sdf
 exp_results/
 venv/
-*.smi
